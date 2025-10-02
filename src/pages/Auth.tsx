@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,17 +7,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Leaf } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, signup, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate authentication
+    const form = e.target as HTMLFormElement;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement).value;
+    
     setTimeout(() => {
+      login(email, password);
       setIsLoading(false);
       toast.success("Login successful!");
       navigate("/dashboard");
@@ -28,8 +40,21 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate registration
+    const form = e.target as HTMLFormElement;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const email = (form.elements.namedItem("signup-email") as HTMLInputElement).value;
+    const phone = (form.elements.namedItem("phone") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("signup-password") as HTMLInputElement).value;
+    const role = (form.elements.namedItem("role") as HTMLSelectElement).value as any;
+    
+    if (!role) {
+      toast.error("Please select your role");
+      setIsLoading(false);
+      return;
+    }
+    
     setTimeout(() => {
+      signup(name, email, phone, password, role);
       setIsLoading(false);
       toast.success("Account created successfully!");
       navigate("/dashboard");
