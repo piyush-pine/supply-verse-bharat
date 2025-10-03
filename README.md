@@ -17,7 +17,7 @@ Supply-Verse Bharat is a blockchain-enabled supply chain platform optimized for 
 - **Tamper-Proof History:** Every transaction or state change is logged, transparent, and immutable for audits and dispute resolution.[1]
 - **Modular API Integration:** Connect with web platforms, apps, and enterprise systems via open APIs for custom needs.[1]
 
-***
+**** 
 
 ### Installation Guide
 
